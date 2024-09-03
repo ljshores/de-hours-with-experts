@@ -53,19 +53,50 @@ class Ingredient():
 
 def decode_string(str):
     """Given a string named str, use the Caesar encoding above to return the decoded string."""
-    # TODO: implement me
-    return '1 cup'
+    # TODO: implement me. had '1 cup' as the return value...why?
+    decoded = []
+    for i in str:
+        try:
+            decoded.append( ENCODING.get(i," "))
+        except:
+            pass
+ 
+    return "".join(decoded)
 
 
 def decode_ingredient(line):
     """Given an ingredient, decode the amount and description, and return a new Ingredient"""
     # TODO: implement me
-    return Ingredient("1 cup", "butter")
+    lst = line.split("#")
+    d_amt = ""
+    for l in lst[0]:
+        try:
+            d_amt = d_amt + ENCODING[l]
+        except:
+            d_amt = d_amt + " "
+    d_desc = ""
+    for l in lst[1]:
+        try:
+            d_desc = d_desc + ENCODING[l]
+        except:
+            d_desc = d_desc + " "
+
+    #description = decoded.split("#")
+    new_ingredient = Ingredient(d_amt, d_desc)
+    #new_ingredient.amount = amount
+    #new_ingredient.description = description
+    return new_ingredient #.amount,  new_ingredient.description  #Ingredient("1 cup", "butter")
 
 
 def main():
     """A program that decodes a secret recipe"""
     # TODO: implement me
+    with open("secret_recipe.txt", "r") as infile, open("decoded_recipe.txt", "w") as outfile:
+        for line in infile:
+            line = line.strip()
+            decoded_ingredient = decode_ingredient(line)
+            if decoded_ingredient is not None:
+                outfile.write(str(decoded_ingredient.amount) + str(decoded_ingredient.description) + '\n')
 
 if __name__ == "__main__":
     main()
